@@ -3,19 +3,15 @@
 	{
 		private $isSalary = false;
 		private $payCheckAmount = null;
-
-		private $wagePerHour = null;
-		private $hoursPerWeek = null;
+		private $paymentFrequency = null;
 		
-		public __construct($isSalary, $wageOrSalary, $hoursPerWeek) {
-			// If salary, set PayCheck amount
-			if ($isSalary) {
-				$this->isSalary;
-				$this->payCheckAmount = $wageOrSalary;
-			} else {
-				$this->wagePerHour = $wageOrSalary;
-				$this->hoursPerWeek = $hoursPerWeek;
-			}
+		private static $WEEKLY_PAY   = 0;
+		private static $BIWEEKLY_PAY = 1;
+		private static $SPECIFIC_PAY = 2;
+		
+		public __construct($isSalary, $paycheckAmount, $payFrequency) {
+			$this->isSalary = $isSalary;
+			$this->paymentFrequency = $paymentFrequency;
 		}
 	}
 ?>
