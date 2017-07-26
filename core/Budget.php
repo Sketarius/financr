@@ -5,6 +5,6 @@
 	{
 		// Family object
 		private $family = null;
-		
+				
 	}
 ?>
