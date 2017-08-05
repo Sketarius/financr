@@ -1,4 +1,6 @@
 <?php
+	require_once('IncomeSource.php');	
+
 	class FamilyMember
 	{
 		private $firstName = null;
