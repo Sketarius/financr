@@ -1,7 +1,7 @@
 <?php
 	require_once('../utils/IndoGear/Html.php');
 	require_once('../utils/IndoGear/Cgi.php');
-	require_once('UserHandler.php');
+	require_once('FinancrStore.php');
 
 	class Financr
 	{
@@ -13,12 +13,13 @@
 			$this->html = new Html('Financr');
 			$this->cgi = new Cgi();
 
-			// User is logged not logged in!
+			// User is not logged in!
 			if (!$this->userIsLoggedIn()) {
 				$this->renderLogin();
+				$this->unitTestAddUser();
 			// User is logged in!
 			} else {
-
+				
 			}
 		}
 
@@ -34,6 +35,12 @@
 			
 			$this->html->endDiv();
 			$this->html->displayFooter();
+		}
+
+		public function unitTestAddUser() {
+			//phpinfo();
+			$store = new FinancrStore();
+			//$store->registerUser('sketarius', 'test', '1802 Trinity Blvd.', 'Blank here', 'Fort Wayne', 'IN', 'USA', 'sketarius@gmail.com');
 		}
 
 		private function userIsLoggedIn() {
