@@ -40,12 +40,15 @@
 		public function unitTestAddUser() {
 			//phpinfo();
 			$store = new FinancrStore();
-			//$store->registerUser('sketarius', 'test', '1802 Trinity Blvd.', 'Blank here', 'Fort Wayne', 'IN', 'USA', 'sketarius@gmail.com');
+			//$store->registerUser('sketarius', 'pmg2bhok', '1802 Trinity Blvd.', 'Blank here', 'Fort Wayne', 'IN', 'USA', 'sketarius@gmail.com');
+			//$store->getUserEmail('sketarius');
+			//$store->hashPassword('abc123');
+			//$store->verifyPassword('sketarius', 'test123');
 		}
 
 		private function userIsLoggedIn() {
 			return isset($_SESSION['logged']);
-		}
+		}		
 
 		private function setSession($key, $value) {
 			$_SESSION[$key] = $value;

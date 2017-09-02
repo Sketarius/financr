@@ -1,3 +1,5 @@
 <?php
-	echo "Financr init!";
+	require_once('../core/Financr.php');
+	
+	$financr = new Financr();
 ?>

@@ -1,0 +1,34 @@
+body {
+	background: #FFFFFC;
+	padding: 0px;
+	margin: 0px;
+}
+
+#header_top {
+	height: 100px;
+	background: #2D3142;
+	margin: 0px;
+	margin-bottom: 10px;
+}
+
+.logo_64 {
+	margin: 10px;
+}
+
+.login {
+	padding: 25px;
+	width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	background: #E7DFC6;
+	border: 2px solid;
+	border-color: #816C61;
+    border-radius: 10px;
+}
+
+.login_entry {
+	
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+}
