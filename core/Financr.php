@@ -35,8 +35,12 @@
 		}
 
 		private function handleFunction($function, $subfunction) {
+			// Register an account
 			if (strcmp($function, "register") == 0) {
 				$register = new FinancrRegister($subfunction);
+			// Dashboard for logged-in user
+			} else if (strcmp($function, "dashboard") == 0) {
+
 			}
 		}
 
