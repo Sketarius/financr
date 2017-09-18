@@ -2,24 +2,41 @@
 	require_once('../utils/IndoGear/Html.php');
 	require_once('../utils/IndoGear/Cgi.php');
 	require_once('FinancrStore.php');
+	require_once('FinancrRegister.php');
+
 
 	class Financr
 	{
 		private $html = null;
 		private $cgi = null;
 
+		private $notloggedfuncs = null;
+
 		public function __construct() {
 			session_start();
 			$this->html = new Html('Financr');
 			$this->cgi = new Cgi();
 
+			$this->notloggedfuncs = array('register');
+
 			// User is not logged in!
 			if (!$this->userIsLoggedIn()) {
-				$this->renderLogin();
-				$this->unitTestAddUser();
+				// If function is accessible while not being logged in.
+				if (in_array($this->cgi->getValue('f'), $this->notloggedfuncs)) {
+					$this->handleFunction($this->cgi->getValue('f'), $this->cgi->getValue('s'));					
+				// Not logged in, and no function request, redirect to login.
+				} else {
+					$this->renderLogin();
+				}
 			// User is logged in!
 			} else {
-				
+
+			}
+		}
+
+		private function handleFunction($function, $subfunction) {
+			if (strcmp($function, "register") == 0) {
+				$register = new FinancrRegister($subfunction);
 			}
 		}
 
@@ -38,12 +55,7 @@
 		}
 
 		public function unitTestAddUser() {
-			//phpinfo();
-			$store = new FinancrStore();
-			//$store->registerUser('sketarius', 'pmg2bhok', '1802 Trinity Blvd.', 'Blank here', 'Fort Wayne', 'IN', 'USA', 'sketarius@gmail.com');
-			//$store->getUserEmail('sketarius');
-			//$store->hashPassword('abc123');
-			//$store->verifyPassword('sketarius', 'test123');
+			
 		}
 
 		private function userIsLoggedIn() {
