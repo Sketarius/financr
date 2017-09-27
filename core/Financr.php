@@ -3,7 +3,8 @@
 	require_once('../utils/IndoGear/Cgi.php');
 	require_once('FinancrStore.php');
 	require_once('FinancrRegister.php');
-
+	require_once('FinancrApp.php');
+	require_once('FinancrNotifications.php');
 
 	class Financr
 	{
@@ -14,8 +15,10 @@
 
 		public function __construct() {
 			session_start();
-			$this->html = new Html('Financr');
-			$this->cgi = new Cgi();
+			
+			$this->app = new FinancrApp();
+			$this->cgi = $this->app->getCGI();
+			$this->html = $this->app->getHTML();
 
 			$this->notloggedfuncs = array('register');
 
@@ -26,12 +29,19 @@
 					$this->handleFunction($this->cgi->getValue('f'), $this->cgi->getValue('s'));					
 				// Not logged in, and no function request, redirect to login.
 				} else {
+					$this->html->setPageTitle('Financr');
+					$this->renderHeaders();
 					$this->renderLogin();
+
+					$notifications = new FinancrNotifications();
+					echo $notifications->scrapeForCarrier("2606227118");
+					//$notifications->unitTestSendMail();
 				}
 			// User is logged in!
 			} else {
 
 			}
+			$this->renderFooter();
 		}
 
 		private function handleFunction($function, $subfunction) {
@@ -44,9 +54,16 @@
 			}
 		}
 
-		private function renderLogin() {
+		private function renderHeaders() {
 			$this->html->addCSS('css/main.css');
 			$this->html->displayHeader();
+		}
+
+		private function renderFooter() {
+			$this->html->displayFooter();
+		}
+
+		private function renderLogin() {
 			$this->html->beginDiv('header_top', 'id');
 			$this->html->displayImage('Financr', 'assets/logo_64.png', 'logo_64');
 			$this->html->endDiv();
@@ -55,12 +72,7 @@
 
 			
 			$this->html->endDiv();
-			$this->html->displayFooter();
-		}
-
-		public function unitTestAddUser() {
-			
-		}
+		}		
 
 		private function userIsLoggedIn() {
 			return isset($_SESSION['logged']);
