@@ -33,8 +33,8 @@
 					$this->renderHeaders();
 					$this->renderLogin();
 
-					$notifications = new FinancrNotifications();
-					echo $notifications->scrapeForCarrier("2606227118");
+					//$notifications = new FinancrNotifications();
+					//echo $notifications->scrapeForCarrier("2606227118");
 					//$notifications->unitTestSendMail();
 				}
 			// User is logged in!

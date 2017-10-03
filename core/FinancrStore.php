@@ -13,9 +13,12 @@
 		}
 
 		// Register a new user
-		public function registerUser($username, $password, $address1, $address2, $city, $state, $country, $email) {
+		public function registerUser($password, $email) {
 			$hashedpassword = $this->auth->hashPassword($password);
-			$qry = "INSERT into users(user_name, user_pass, user_pass_salt, user_address1, user_address2, user_city, user_state, user_country, user_email) VALUES ('$username', '$hashedpassword', 'nosalt', '$address1', '$address2', '$city', '$state', '$country', '$email')";
+			$escaped_pw = $this->conn->escapeString($hashedpassword);
+			$escaped_email = $this->conn->escapeString($email);
+
+			$qry = "INSERT into users(user_pass, user_email) VALUES ('$escaped_pw', '$escaped_email')";
 			$result = $this->conn->insertQuery($qry);
 		}
 

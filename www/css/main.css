@@ -32,3 +32,11 @@ body {
 	margin-right: auto;
 	width: 300px;
 }
+
+.error_textfield {
+	background-color: #ffafaf;
+}
+
+.success_textfield {
+	background-color: #99fcbc;
+}

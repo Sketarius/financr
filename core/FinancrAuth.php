@@ -9,12 +9,12 @@
 			$this->conn = new Database('/etc/financr/settings.conf');
 		}
 
-		private function hashPassword($password) {
+		public function hashPassword($password) {
 			return hash("sha256", $password);
 		}
 
-		public function verifyPassword($username, $password) {
-			$result = $this->conn->selectQuery("user_pass", "users", "user_name='$username'", null);
+		public function verifyPassword($email, $password) {
+			$result = $this->conn->selectQuery("user_pass", "users", "user_email='$email'", null);
 			
 			$enteredPass = $this->hashPassword(trim($password));
 			$retrievedPass = $result[0]["user_pass"];
