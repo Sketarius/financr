@@ -20,5 +20,8 @@
 		private function displayDashboard() {
 			
 		}
+		
+		private function firstTimeSetup() {
+		}
 	}
 ?>

@@ -22,8 +22,22 @@
 			$result = $this->conn->insertQuery($qry);
 		}
 
-		public function getUserEmail($username) {
-			$result = $this->conn->selectQuery("user_email", "users", "user_name='$username'", "meh");	
+		public function emailAlreadyRegistered($email) {
+			$escaped_email = $this->conn->escapeString($email);
+
+			$result = $this->conn->selectQuery('user_id', 'users', "user_email='$escaped_email'");
+			if (sizeof($result) > 0) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public function addNewSession($email) {
+			$session_key = $this->auth->generateRandomString(40);
+			$qry = "INSERT into user_sessions(session_key, session_user_id, session_create_dt) VALUES('$session_key', (SELECT user_id FROM users WHERE user_email='$email'), NOW());";
+			echo $qry;
+			$result = $this->conn->insertQuery($qry);
 		}
 	}
 ?>

@@ -20,7 +20,7 @@
 			$this->cgi = $this->app->getCGI();
 			$this->html = $this->app->getHTML();
 
-			$this->notloggedfuncs = array('register');
+			$this->notloggedfuncs = array('register', 'login');
 
 			// User is not logged in!
 			if (!$this->userIsLoggedIn()) {
@@ -51,6 +51,9 @@
 			// Dashboard for logged-in user
 			} else if (strcmp($function, "dashboard") == 0) {
 
+			} else if (strcmp($function, "login") == 0) {
+				//$store = new FinancrStore();
+				//$store->addNewSession('sketarius@gmail.com');
 			}
 		}
 

@@ -32,7 +32,7 @@
 										"consumercellular"=>"cingularme.com",
 										"cspire"=>"cspirel.com",
 										"pageplus"=>"vtext.com");
-			$this->loadSMTPSettings()
+			$this->loadSMTPSettings();
 		}
 		
 

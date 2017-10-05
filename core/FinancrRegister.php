@@ -39,11 +39,15 @@
 			$email = $this->cgi->getValue('email');
 			$pass = $this->cgi->getValue('password1');
 
-			$store->registerUser($pass, $email);
-			$notifications->sendMail($email, 'Welcome to Financr!', 'Hey,<br/>Thanks for taking your time to try out Financr.' .
-																	'If you have any questions contact us!<br />Thanks<br />' .
-																	'The Financr Team');
-			echo "Registered!";
+			if (!$store->emailAlreadyRegistered($email)) {
+				$store->registerUser($pass, $email);
+				$notifications->sendMail($email, 'Welcome to Financr!', 'Hey,<br/>Thanks for taking your time to try out Financr.' .
+																		'If you have any questions contact us!<br />Thanks<br />' .
+																		'The Financr Team');
+				echo "Registered!";
+			} else {
+				echo "Email already exists";
+			}
 		}
 
 		private function renderInviteRegister() {
