@@ -5,6 +5,8 @@
 	require_once('FinancrRegister.php');
 	require_once('FinancrApp.php');
 	require_once('FinancrNotifications.php');
+	require_once('FinancrAuth.php');
+	require_once('FinancrDashboard.php');
 
 	class Financr
 	{
@@ -13,17 +15,18 @@
 
 		private $notloggedfuncs = null;
 
-		public function __construct() {
-			session_start();
-			
+		public function __construct() {			
 			$this->app = new FinancrApp();
 			$this->cgi = $this->app->getCGI();
 			$this->html = $this->app->getHTML();
+			$this->auth = new FinancrAuth();
+			$this->store = new FinancrStore();
 
 			$this->notloggedfuncs = array('register', 'login');
+			$this->loggedinfuncs = array('dashboard');
 
 			// User is not logged in!
-			if (!$this->userIsLoggedIn()) {
+			if (!$this->auth->isLoggedIn()) {
 				// If function is accessible while not being logged in.
 				if (in_array($this->cgi->getValue('f'), $this->notloggedfuncs)) {
 					$this->handleFunction($this->cgi->getValue('f'), $this->cgi->getValue('s'));					
@@ -32,14 +35,26 @@
 					$this->html->setPageTitle('Financr');
 					$this->renderHeaders();
 					$this->renderLogin();
-
-					//$notifications = new FinancrNotifications();
-					//echo $notifications->scrapeForCarrier("2606227118");
-					//$notifications->unitTestSendMail();
 				}
 			// User is logged in!
 			} else {
-
+				echo "user logged in";
+				// Verify session key is real
+				if ($this->store->verifySession($_SESSION['session_email'], $_SESSION['session_key'])) {
+					// Function is accessible only while being logged in.
+					if (in_array($this->cgi->getValue('f'), $this->loggedinfuncs)) {
+						$this->handleFunction($this->cgi->getValue('f'), $this->cgi->getValue('s'));
+					} else {
+						$this->handleFunction('dashboard', '');
+					}
+				// Session is either fake or old.
+				} else {
+					echo "destroying session";
+					session_destroy();
+					$this->html->setPageTitle('Financr');
+					$this->renderHeaders();
+					$this->renderLogin();
+				}
 			}
 			$this->renderFooter();
 		}
@@ -50,10 +65,12 @@
 				$register = new FinancrRegister($subfunction);
 			// Dashboard for logged-in user
 			} else if (strcmp($function, "dashboard") == 0) {
-
+				$dashboard = new FinancrDashboard($subfunction);
 			} else if (strcmp($function, "login") == 0) {
-				//$store = new FinancrStore();
-				//$store->addNewSession('sketarius@gmail.com');
+				if ($this->auth->verifyPassword($_POST['username'], $_SESSION['password'])) {
+					$this->store->addNewSession($_POST['username']);
+					$this->handleFunction('dashboard', '');
+				} else "couldnt verify session";
 			}
 		}
 
@@ -67,18 +84,19 @@
 		}
 
 		private function renderLogin() {
+			echo "<form method=\"POST\">";
+			echo "<input type=\"hidden\" name=\"f\" value=\"login\" />";
 			$this->html->beginDiv('header_top', 'id');
 			$this->html->displayImage('Financr', 'assets/logo_64.png', 'logo_64');
 			$this->html->endDiv();
 			$this->html->beginDiv('login', 'class');
 			$this->html->renderLogin('login_entry','login_entry','username','password',False);
-
-			
 			$this->html->endDiv();
+			echo "</form>";
 		}		
 
 		private function userIsLoggedIn() {
-			return isset($_SESSION['logged']);
+			return $this->auth->isLoggedIn();
 		}		
 
 		private function setSession($key, $value) {

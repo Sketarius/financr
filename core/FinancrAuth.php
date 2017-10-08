@@ -36,8 +36,16 @@
 		    return $randomString;
 		}
 
-		public function login($email) {
+		public function isLoggedIn() {
+			if (isset($_SESSION['session_email']) && isset($_SESSION['session_key'])) {
+				return true;
+			}
 
+			return false;
+		}
+
+		public function login($email) {
+			
 		}
 	}
 ?>

@@ -33,11 +33,34 @@
 			return false;
 		}
 
+		public function verifySession($email, $session_key) {
+			$result = $this->conn->selectQuery('session_create_dt', 
+												'user_sessions us ' .
+				                                'LEFT JOIN users u ON u.user_id=us.session_user_id', 
+				                                "u.user_email='$email' AND us.session_key='$session_key'");
+			if (sizeof($result) > 0) {
+				//print_r($result);
+				$time = strtotime($result[0]['session_create_dt']);
+				$now = new DateTime();
+				$now = $now->getTimestamp();
+				$two_days_ahead = strtotime('+2 day', $time);
+
+				if ($now < $two_days_ahead) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public function addNewSession($email) {
 			$session_key = $this->auth->generateRandomString(40);
 			$qry = "INSERT into user_sessions(session_key, session_user_id, session_create_dt) VALUES('$session_key', (SELECT user_id FROM users WHERE user_email='$email'), NOW());";
-			echo $qry;
-			$result = $this->conn->insertQuery($qry);
+			//echo $qry;
+			if($this->conn->insertQuery($qry)) {
+				$_SESSION['session_email'] = $email;
+				$_SESSION['session_key'] = $session_key;
+			}
 		}
 	}
 ?>
