@@ -1,14 +1,15 @@
-body {
+html, body {
 	background: #FFFFFC;
 	padding: 0px;
 	margin: 0px;
+	height: 100%;
 }
 
 #header_top {
 	height: 100px;
 	background: #2D3142;
 	margin: 0px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 }
 
 .logo_64 {
@@ -20,6 +21,7 @@ body {
 	width: 30%;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 10px;
 	background: #E7DFC6;
 	border: 2px solid;
 	border-color: #816C61;
@@ -39,4 +41,17 @@ body {
 
 .success_textfield {
 	background-color: #99fcbc;
+}
+
+#dashboard_side_bar {
+	float: left;
+	width: 300px;
+	height: 100%;
+	background-color: #E7DFC6;
+}
+
+.dashboard_side_bar_title {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100px;
 }

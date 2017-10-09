@@ -38,18 +38,17 @@
 				}
 			// User is logged in!
 			} else {
-				echo "user logged in";
 				// Verify session key is real
 				if ($this->store->verifySession($_SESSION['session_email'], $_SESSION['session_key'])) {
 					// Function is accessible only while being logged in.
 					if (in_array($this->cgi->getValue('f'), $this->loggedinfuncs)) {
 						$this->handleFunction($this->cgi->getValue('f'), $this->cgi->getValue('s'));
 					} else {
-						$this->handleFunction('dashboard', '');
+						//$this->handleFunction('dashboard', '');
+						header('Location: index.php?f=dashboard'); 
 					}
 				// Session is either fake or old.
 				} else {
-					echo "destroying session";
 					session_destroy();
 					$this->html->setPageTitle('Financr');
 					$this->renderHeaders();
@@ -70,7 +69,7 @@
 				if ($this->auth->verifyPassword($_POST['username'], $_SESSION['password'])) {
 					$this->store->addNewSession($_POST['username']);
 					$this->handleFunction('dashboard', '');
-				} else "couldnt verify session";
+				}
 			}
 		}
 
