@@ -14,6 +14,7 @@
 		private $cgi = null;
 
 		private $notloggedfuncs = null;
+		private $loggedinfuncs = null;
 
 		public function __construct() {			
 			$this->app = new FinancrApp();
@@ -66,9 +67,9 @@
 			} else if (strcmp($function, "dashboard") == 0) {
 				$dashboard = new FinancrDashboard($subfunction);
 			} else if (strcmp($function, "login") == 0) {
-				if ($this->auth->verifyPassword($_POST['username'], $_SESSION['password'])) {
+				if ($this->auth->verifyPassword($_POST['username'], $_POST['password'])) {
 					$this->store->addNewSession($_POST['username']);
-					$this->handleFunction('dashboard', '');
+					header('Location: index.php?f=dashboard');
 				}
 			}
 		}

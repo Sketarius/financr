@@ -15,10 +15,10 @@
 		// Register a new user
 		public function registerUser($password, $email) {
 			$hashedpassword = $this->auth->hashPassword($password);
-			$escaped_pw = $this->conn->escapeString($hashedpassword);
+			//$escaped_pw = $this->conn->escapeString($hashedpassword);
 			$escaped_email = $this->conn->escapeString($email);
 
-			$qry = "INSERT into users(user_pass, user_email) VALUES ('$escaped_pw', '$escaped_email')";
+			$qry = "INSERT into users(user_pass, user_email) VALUES ('$hashedpassword', '$escaped_email')";
 			$result = $this->conn->insertQuery($qry);
 		}
 
@@ -61,6 +61,16 @@
 				$_SESSION['session_email'] = $email;
 				$_SESSION['session_key'] = $session_key;
 			}
+		}
+
+		public function getSideMenuItems($security_role) {
+			$result = $this->conn->selectQuery('menu_value, menu_url', 'menu_items', "menu_security_role='$security_role'");
+
+			if (sizeof($result) > 0) {
+				return $result;
+			}
+
+			return null;
 		}
 	}
 ?>

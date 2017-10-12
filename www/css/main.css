@@ -5,6 +5,12 @@ html, body {
 	height: 100%;
 }
 
+#main_app {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
 #header_top {
 	height: 100px;
 	background: #2D3142;
@@ -54,4 +60,10 @@ html, body {
 	margin-left: auto;
 	margin-right: auto;
 	width: 100px;
+}
+
+.side_menu_item {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
 }

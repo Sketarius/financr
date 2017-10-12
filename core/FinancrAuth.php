@@ -19,9 +19,11 @@
 			$enteredPass = $this->hashPassword(trim($password));
 			$retrievedPass = $result[0]["user_pass"];
 
-			if (strcmp($enteredPass, $retrievedPass) !== 0) {
+			if (strcmp($enteredPass, $retrievedPass) == 0) {
 				return true;
 			}
+
+			echo $enteredPass . " " . $retrievedPass;
 
 			return false;
 		}
