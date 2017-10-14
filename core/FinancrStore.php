@@ -72,5 +72,18 @@
 
 			return null;
 		}
+
+		public function userCompletedFirstTimeSetup($email) {
+			$result = $this->conn->selectQuery('user_setup', 'users', "user_email='$email'");
+
+			if (sizeof($result) > 0) {
+				$ret = intval($result[0]['user_setup']);
+				if ($ret == 1){
+					return true; 
+				} else return false;
+			}
+
+			return null;
+		}
 	}
 ?>

@@ -10,7 +10,9 @@
 			$this->html = new Html(strlen($this->cgi->getValue('page_title')) > 0 ?($this->cgi->getValue('page_title')):'Financr');
 
 			// Adding JQuery to all instances of FinancrApp
+			$this->html->addCSS('lib/jquery-ui-1.12.1.custom/jquery-ui.css');
 			$this->html->addScript('lib/jquery-3.2.1.min.js');
+			$this->html->addScript('lib/jquery-ui-1.12.1.custom/jquery-ui.min.js');
 			$this->html->addScript('lib/angular.min.js');
 		}
 
