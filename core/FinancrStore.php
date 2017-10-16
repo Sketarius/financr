@@ -85,5 +85,10 @@
 
 			return null;
 		}
+
+		public function getSMSCarriers() {
+			$result = $this->conn->selectQuery('sms_id, sms_carrier, sms_carrier_address', 'sms_carriers', null, null, 'json');
+			print_r($result);
+		}
 	}
 ?>

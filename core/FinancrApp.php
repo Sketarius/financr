@@ -8,6 +8,7 @@
 		public function __construct() {
 			$this->cgi = new Cgi();
 			$this->html = new Html(strlen($this->cgi->getValue('page_title')) > 0 ?($this->cgi->getValue('page_title')):'Financr');
+			$this->store = new FinancrStore();
 
 			// Adding JQuery to all instances of FinancrApp
 			$this->html->addCSS('lib/jquery-ui-1.12.1.custom/jquery-ui.css');

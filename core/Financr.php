@@ -7,6 +7,7 @@
 	require_once('FinancrNotifications.php');
 	require_once('FinancrAuth.php');
 	require_once('FinancrDashboard.php');
+	require_once('FinancrAJAX.php');
 
 	class Financr
 	{
@@ -21,10 +22,10 @@
 			$this->cgi = $this->app->getCGI();
 			$this->html = $this->app->getHTML();
 			$this->auth = new FinancrAuth();
-			$this->store = new FinancrStore();
+			$this->store = $this->app->getStore();
 
 			$this->notloggedfuncs = array('register', 'login');
-			$this->loggedinfuncs = array('dashboard');
+			$this->loggedinfuncs = array('dashboard', 'ajax');
 
 			// User is not logged in!
 			if (!$this->auth->isLoggedIn()) {
@@ -56,7 +57,10 @@
 					$this->renderLogin();
 				}
 			}
-			$this->renderFooter();
+			// If function is ajax don't render HTML footers.
+			if(strcmp($this->cgi->getValue('f'), 'ajax') !== 0) {
+				$this->renderFooter();
+			}
 		}
 
 		private function handleFunction($function, $subfunction) {
@@ -66,11 +70,15 @@
 			// Dashboard for logged-in user
 			} else if (strcmp($function, "dashboard") == 0) {
 				$dashboard = new FinancrDashboard($subfunction);
+			// The action of actually logging in
 			} else if (strcmp($function, "login") == 0) {
 				if ($this->auth->verifyPassword($_POST['username'], $_POST['password'])) {
 					$this->store->addNewSession($_POST['username']);
 					header('Location: index.php?f=dashboard');
 				}
+			// AJAX Get and POST handlers
+			} else if (strcmp($function, "ajax") == 0) {
+				$ajax = new FinancrAJAX($this->app, $subfunction);
 			}
 		}
 
